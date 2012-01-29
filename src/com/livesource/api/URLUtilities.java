@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-public class URLUtil {
+public class URLUtilities {
 
 	public static String encode(final String text) {
 		try {
