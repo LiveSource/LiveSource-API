@@ -12,6 +12,17 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>LiveSourceAPI</servlet-name>
 		<url-pattern>/livesourceapi</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>GetGithubFileFeature</servlet-name>
+		<servlet-class>com.livesource.api.github.GetGithubFileFeatureServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetGithubFileFeature</servlet-name>
+		<url-pattern>/livesourceapi/GetGithubFileFeature</url-pattern>
+	</servlet-mapping>	
+	
+	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
