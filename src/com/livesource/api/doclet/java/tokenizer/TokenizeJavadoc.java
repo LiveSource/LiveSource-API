@@ -7,67 +7,70 @@ public class TokenizeJavadoc {
 
 	public static JSONObject tokenize(String javadocString) {
 
-		javadocString = javadocString.replaceAll(
-				JavadocTokens.JAVADOC_INIT_REGULAR_EXPRESSION.name, "");
-
-		javadocString = javadocString.replaceAll(
-				JavadocTokens.JAVADOC_END_REGULAR_EXPRESSION.name, "");
-
-		javadocString = javadocString.replaceAll(
-				JavadocTokens.STAR_REGULAR_EXPRESSION.name, "");
-
-		String[] javadocTagsArray = javadocString.trim().split(
-				JavadocTokens.AT.name);
-
-		String classDescription = "";
-
-		String classType = null;
-
-		String classStatus = null;
-
-		for (String tag : javadocTagsArray) {
-
-			tag = tag.trim();
-
-			for (LiveSourceClassTypeTags typeTag : LiveSourceClassTypeTags
-					.values()) {
-
-				if (typeTag.name().equals(tag)) {
-
-					classType = tag;
-					break;
-				}
-			}
-
-			for (LiveSourceClassStatusTags statusTag : LiveSourceClassStatusTags
-					.values()) {
-
-				if (statusTag.name().equals(tag)) {
-
-					classStatus = tag;
-					break;
-				}
-			}
-
-			if (tag != classType && tag != classStatus) {
-
-				classDescription += tag;
-			}
-		}
-
 		JSONObject jsonJavadoc = new JSONObject();
 
-		try {
+		if (javadocString != null) {
 
-			jsonJavadoc.put("classDescription", classDescription);
+			javadocString = javadocString.replaceAll(
+					JavadocTokens.JAVADOC_INIT_REGULAR_EXPRESSION.name, "");
 
-			jsonJavadoc.put("classType", classType);
+			javadocString = javadocString.replaceAll(
+					JavadocTokens.JAVADOC_END_REGULAR_EXPRESSION.name, "");
 
-			jsonJavadoc.put("classStatus", classStatus);
+			javadocString = javadocString.replaceAll(
+					JavadocTokens.STAR_REGULAR_EXPRESSION.name, "");
 
-		} catch (JSONException e) {
+			String[] javadocTagsArray = javadocString.trim().split(
+					JavadocTokens.AT.name);
 
-			e.printStackTrace();
+			String classDescription = "";
+
+			String classType = null;
+
+			String classStatus = null;
+
+			for (String tag : javadocTagsArray) {
+
+				tag = tag.trim();
+
+				for (LiveSourceClassTypeTags typeTag : LiveSourceClassTypeTags
+						.values()) {
+
+					if (typeTag.name().equals(tag)) {
+
+						classType = tag;
+						break;
+					}
+				}
+
+				for (LiveSourceClassStatusTags statusTag : LiveSourceClassStatusTags
+						.values()) {
+
+					if (statusTag.name().equals(tag)) {
+
+						classStatus = tag;
+						break;
+					}
+				}
+
+				if (tag != classType && tag != classStatus) {
+
+					classDescription += tag;
+				}
+			}
+
+			try {
+
+				jsonJavadoc.put("classDescription", classDescription);
+
+				jsonJavadoc.put("classType", classType);
+
+				jsonJavadoc.put("classStatus", classStatus);
+
+			} catch (JSONException e) {
+
+				e.printStackTrace();
+			}
 		}
 
 		return jsonJavadoc;

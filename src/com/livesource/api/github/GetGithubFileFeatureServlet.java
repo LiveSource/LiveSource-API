@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.livesource.api.ServletUtilities;
+import com.livesource.api.URLUtilities;
 
 public class GetGithubFileFeatureServlet extends HttpServlet {
 
@@ -19,18 +20,25 @@ public class GetGithubFileFeatureServlet extends HttpServlet {
 	// &fileExtension=java
 	// &sha=63756ce4c0bc4da4b4bbe9e90f8d2c3181489186
 
-	// sha=9aa3b553395a0aa89e4f8da688de546be86e91fa
+	// &sha=9aa3b553395a0aa89e4f8da688de546be86e91fa
+
+	// &sha=c1323e3c877afd6dbf03cea2a298493cc5215b6b
+
+	private static final long serialVersionUID = -4808522440542254808L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		String authenticationToken = request.getParameter("access_token");
+		String authenticationToken = URLUtilities.decode(request
+				.getParameter("access_token"));
 
-		String githubRepository = request.getParameter("githubRepository");
+		String githubRepository = URLUtilities.decode(request
+				.getParameter("githubRepository"));
 
-		String fileExtension = request.getParameter("fileExtension");
+		String fileExtension = URLUtilities.decode(request
+				.getParameter("fileExtension"));
 
-		String fileSha = request.getParameter("sha");
+		String fileSha = URLUtilities.decode(request.getParameter("sha"));
 
 		String fileContent = GetGithubFile.getFileContentDecoded(
 				authenticationToken, githubRepository, fileSha);
@@ -47,23 +55,28 @@ public class GetGithubFileFeatureServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 
-		String authenticationToken = request.getParameter("access_token");
+		String authenticationToken = URLUtilities.decode(request
+				.getParameter("access_token"));
 
-		String githubRepository = request.getParameter("githubRepository");
+		String githubRepository = URLUtilities.decode(request
+				.getParameter("githubRepository"));
 
-		String fileExtension = request.getParameter("fileExtension");
+		String fileExtension = URLUtilities.decode(request
+				.getParameter("fileExtension"));
 
-		String fileSha = request.getParameter("sha");
+		String fileSha = URLUtilities.decode(request.getParameter("sha"));
 
-		String fileContent = GetGithubFile.getFileContentDecoded(
+		String fileContentDecoded = GetGithubFile.getFileContent(
 				authenticationToken, githubRepository, fileSha);
+
+		String fileContent = GetGithubFile.decodeBase64(fileContentDecoded);
 
 		JSONObject classDescriptionJson = GetGithubFileFeature
 				.getClassDescription(fileContent, fileExtension);
 
 		try {
 
-			classDescriptionJson.put("fileContent", fileContent);
+			classDescriptionJson.put("fileContent", fileContentDecoded);
 
 		} catch (JSONException e) {
 

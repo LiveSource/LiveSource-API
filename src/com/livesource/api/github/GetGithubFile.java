@@ -13,8 +13,10 @@ public class GetGithubFile {
 	public static String getFile(final String authToken,
 			final String githubRepository, final String sha) {
 
-		final String jsonString = URLUtilities.fetchURL(reposURL
-				+ githubRepository + "/git/blobs/" + sha + "?" + authToken);
+		String parameters = authToken;
+
+		final String jsonString = URLUtilities.fetchURLGet(reposURL
+				+ githubRepository + "/git/blobs/" + sha, parameters);
 
 		return jsonString;
 	}
